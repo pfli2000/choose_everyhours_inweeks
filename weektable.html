@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+<title>week</title>
+    <script type="text/javascript" src="jquery-1.12.3.min.js"></script>
+
+<style type="text/css">
+table {  
+        border-collapse: collapse;     
+        border: 1px solid black; 
+        width:100%;
+        height:fixed;
+      }    
+      tr {  
+        text-align: center;  
+        border: 1px solid black;  
+        padding: 0.2em;  
+      }  
+      td {  
+      width:2.5%;
+        height:30px;
+        border: 1px solid black;  
+        padding: 0.2em;  
+        }
+
+</style>
+</head>
+<body>
+<div>
+<table id="weekTable" >
+  <tr id="timePhase">
+  <td rowspan="2" id="allSelect" onclick="selectALL()">全选</td>
+  <td colspan="7">凌晨时段</td>
+  <td colspan="4">上午时段</td>
+  <td colspan="4">中午时段</td>
+  <td colspan="4">下午时段</td>
+  <td colspan="5">夜晚时段</td>
+  
+  </tr>
+   <tr id="times">
+  <td>0</td>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td>10</td>
+  <td>11</td>
+  <td>12</td>
+  <td>13</td>
+  <td>14</td>
+  <td>15</td>
+  <td>16</td>
+  <td>17</td>
+  <td>18</td>
+  <td>19</td>
+  <td>20</td>
+  <td>21</td>
+  <td>22</td>
+  <td>23</td>
+  </tr>
+ <tbody id="weekList"></tbody> 
+  
+
+</table>
+	<button class="button_save" onclick="getvalue()">保存</button>
+
+</div>
+<script type="text/javascript">
+//初始加载的数据
+var initTimes=new Array("星期一0","星期二1","星期二3","星期二5","星期二6","星期二23","星期三2","星期四3","星期五4","星期六5","星期日6");
+
+
+var dayValues=new Array();//选择的所有时间段的值
+var selectAllkey=0; //0不全选 1全选
+var dayInWeeks=new Array("星期一","星期二","星期三","星期四","星期五","星期六","星期日");
+var colorweek="";
+var colorMon="#D03451";
+var colorTue="#2DD82A";
+var colorWed="#E8E223";					
+var colorThu="#6FDA77";
+var colorFri="#422DB7";
+var colorSat="#175F9C";
+var colorSun="#520C7D";
+ var thtml = '';
+var cols=24;
+
+$(function(){
+
+
+ initTable();
+
+                      
+});
+//初始化表格
+function initTable(){
+ $.each(dayInWeeks,function(rowIndex,day){
+    
+  thtml +='<tr id="'+rowIndex+'">';
+ 
+  thtml +='<td id="'+day+'">'+day+'</td>';
+    for (i=0;i<=23;i++){
+   
+    thtml +='<td onclick="getColumnDetail(this,'+rowIndex+','+i+')"  id="'+day+i+'" style="text-indent:-2000em;"></td>';
+
+    }
+    thtml +=' </tr>';
+
+ 
+ });
+ $('#weekList').html(thtml);
+ for(v=0; v<=initTimes.length;v++ ){
+ 
+ var initRow=initTimes[v].toString().substr(2,1);
+ // initRow.replace(/Microsoft/, "W3School")
+  //alert(initTimes[v]);
+  //alert(initRow);
+  
+  if(initRow=="一"){colorweek=colorMon }
+else if( initRow=="二"){colorweek=colorTue}
+else if( initRow=="三"){colorweek=colorWed }
+else if( initRow=="四"){colorweek=colorThu }
+else if( initRow=="五"){colorweek=colorFri }
+else if( initRow=="六"){colorweek=colorSat }
+else if( initRow=="日"){colorweek=colorSun }
+$("#"+initTimes[v]+"").css("background-color",colorweek);
+$("#"+initTimes[v]+"").html(initTimes[v]);
+
+  }
+}
+//点击事件
+function getColumnDetail(tdday,day,i){
+var rowIndex =day;
+var valuelength =$(tdday).text();
+if(valuelength==""||valuelength==null){
+
+if(rowIndex==0){colorweek=colorMon }
+else if( rowIndex==1){colorweek=colorTue}
+else if( rowIndex==2){colorweek=colorWed }
+else if( rowIndex==3){colorweek=colorThu }
+else if( rowIndex==4){colorweek=colorFri }
+else if( rowIndex==5){colorweek=colorSat }
+else if( rowIndex==6){colorweek=colorSun }
+$(tdday).css("background-color",colorweek);
+$(tdday).html(dayInWeeks[day]+i);
+
+}else {
+$(tdday).css("background-color","white");
+$(tdday).html("");
+}
+}
+
+
+  $("#allSelect").mouseover(function(){
+    $("#allSelect").css("background-color","lightgray");
+  });
+  $("#allSelect").mouseout(function(){
+    $("#allSelect").css("background-color","white");
+  });
+  
+  
+  
+
+  //全选
+  function selectALL(){
+	
+   if(selectAllkey==0){
+ $.each(dayInWeeks,function(rowIndex,day){
+if(rowIndex==0){colorweek=colorMon 
+}else if( rowIndex==1){colorweek=colorTue}
+else if( rowIndex==2){colorweek=colorWed }
+else if( rowIndex==3){colorweek=colorThu }
+else if( rowIndex==4){colorweek=colorFri }
+else if( rowIndex==5){colorweek=colorSat }
+else if( rowIndex==6){colorweek=colorSun }
+    for (i=0;i<=23;i++){
+    var tdid =day+i ;
+    $("#"+tdid+"").css("background-color",colorweek);
+    // $("#"+tdid+"")addClass('red').html("+tdid+");
+     $("#"+tdid+"").text(tdid);
+    //alert("test:"+ $("#"+tdid+"").text());
+    }  
+ });
+ }else{
+  $.each(dayInWeeks,function(rowIndex,day){
+if(rowIndex==0){colorweek=colorMon 
+}else if( rowIndex==1){colorweek=colorTue}
+else if( rowIndex==2){colorweek=colorWed }
+else if( rowIndex==3){colorweek=colorThu }
+else if( rowIndex==4){colorweek=colorFri }
+else if( rowIndex==5){colorweek=colorSat }
+else if( rowIndex==6){colorweek=colorSun }
+    for (i=0;i<=23;i++){
+    var tdid =day+i ;
+    $("#"+tdid+"").css("background-color","white");
+     $("#"+tdid+"").text("");
+    }  
+ });
+ dayValues.length = 0;
+ }
+   selectAllkey=1-selectAllkey;
+ }
+
+     
+   //获取选中的时间段格式为  ：星期+时间 ； 例 ： 星期一0，星期二2
+ function getvalue(){
+             dayValues.length=0;
+ 	    var tvalue = document.getElementsByTagName("table")[0]; //获取第一个表格   
+        for(var i=2;i<tvalue.rows.length;i++){  
+            for(var j=1;j<tvalue.rows[i].cells.length;j++){  
+                 var everyvalue=tvalue.rows[i].cells[j].innerHTML;
+                 if(everyvalue!=""){
+                 dayValues.push(everyvalue);
+                 }
+             
+            }  
+        } 
+           // return dayValues;
+           alert("dayValues:"+dayValues);
+}
+ 
+
+</script>
+</body>
+</html>
